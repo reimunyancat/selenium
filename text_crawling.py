@@ -6,7 +6,7 @@ from selenium.webdriver.common.by import By
 from selenium.common.exceptions import NoSuchElementException
 from Scripts.fun import create_save_file
 
-pause = random.uniform(0.4, 0.6)
+pause = random.uniform(0.4, 0.8)
 
 # HTTP 헤더 설정
 opener = urllib.request.build_opener()
