@@ -79,3 +79,10 @@ def image_download(original_img_src, filename, query, i, num_images):
             print(f"{query} : {i + 1}/{num_images} 이미지 다운로드 완료...")
         except Exception as e:
             error(filename, query, i, num_images, e)
+
+def create_save_file(query):
+    if not os.path.exists('texts'):
+        os.makedirs('texts')
+    if not os.path.exists(query):
+        with open(f'texts\{query}.txt', 'w', encoding='utf-8') as f:
+            f.write(f"{query} 파일 생성 완료")
