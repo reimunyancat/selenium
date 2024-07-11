@@ -130,7 +130,7 @@ while True:
 
     driver.quit()
     print(f"{query} 검색어 이미지 수집 완료. 성공한 이미지 수: {success_count}")
-    print("작업 완료 'exit' 입력시 종료 아니면 다시 반복합니다.")
+    print("작업 완료 'exit' 입력시 종료 아무거나 입력하시면 다시 반복합니다.")
     wa = input()
     if wa == 'exit':
         print("종료중...")

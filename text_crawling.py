@@ -13,21 +13,28 @@ opener = urllib.request.build_opener()
 opener.addheaders = [('User-Agent', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36')]
 urllib.request.install_opener(opener)
 
+while True:
+    query = input("검색어 입력: ")
+    create_save_file(query)
 
-query = input("검색어 입력: ")
-create_save_file(query)
+    chrome_options = webdriver.ChromeOptions()
+    chrome_options.add_argument("--ignore-certificate-errors")
+    chrome_options.add_argument('--ignore-ssl-errors')
+    driver = webdriver.Chrome(options=chrome_options)
 
-chrome_options = webdriver.ChromeOptions()
-chrome_options.add_argument("--ignore-certificate-errors")
-chrome_options.add_argument('--ignore-ssl-errors')
-driver = webdriver.Chrome(options=chrome_options)
+    query2 = query.replace(' ', '%20')
+    driver.get(f"https://namu.wiki/w/{query2}")
+    time.sleep(pause)
 
-driver.get(f"https://namu.wiki/w/{query}")
-time.sleep(pause)
+    text = ' '.join(element.text for element in driver.find_elements(By.XPATH, '/html/body/div/div/div[2]/main/div/div/div[4]/div'))
 
-text = ' '.join(element.text for element in driver.find_elements(By.XPATH, '/html/body/div/div/div[2]/main/div/div/div[4]/div/div[2]/div[4]/div[4]/div[5]'))
+    with open(f'texts\{query}.txt', 'w', encoding='utf-8') as f:
+        f.write(text)
 
-with open(f'texts\{query}.txt', 'w', encoding='utf-8') as f:
-    f.write(text)
-
-driver.quit()
+    driver.quit()
+    print(f"{query} 검색어 텍스트 수집 완료...")
+    print("작업 완료 'exit' 입력시 종료 아무거나 입력하시면 다시 반복합니다.")
+    wa = input()
+    if wa == 'exit':
+        print("종료중...")
+        break
