@@ -25,9 +25,9 @@ driver = webdriver.Chrome(options=chrome_options)
 driver.get(f"https://namu.wiki/w/{query}")
 time.sleep(pause)
 
-wa = ' '.join(element.text for element in driver.find_elements(By.XPATH, '/html/body/div/div/div[2]/main/div/div/div[4]/div/div[2]/div[4]/div[4]/div[5]'))
+text = ' '.join(element.text for element in driver.find_elements(By.XPATH, '/html/body/div/div/div[2]/main/div/div/div[4]/div/div[2]/div[4]/div[4]/div[5]'))
 
 with open(f'texts\{query}.txt', 'w', encoding='utf-8') as f:
-    f.write(wa)
+    f.write(text)
 
 driver.quit()
