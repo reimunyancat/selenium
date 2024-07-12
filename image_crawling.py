@@ -1,9 +1,8 @@
 import time
 import urllib.request
-from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.common.exceptions import NoSuchElementException
-from Scripts.fun import create_save_folder, image_limit_check, file_extention_f, image_download, error
+from Scripts.fun import chrome, default_settings, create_save_folder, image_limit_check, file_extention_f, image_download, error, scroll_and_load
 
 pause = 0.4
 click_pause = 0.3
@@ -22,38 +21,9 @@ while True:
     # 이미지 개수 입력
     num_images = int(input("수집할 이미지 개수 입력: "))
 
-    chrome_options = webdriver.ChromeOptions()
-    chrome_options.add_argument("--ignore-certificate-errors")
-    chrome_options.add_argument('--ignore-ssl-errors')
-    driver = webdriver.Chrome(options=chrome_options)
+    driver = chrome()
 
-    driver.get("https://www.google.com/preferences?hl=ko&prev=https://www.google.com/search?q%3D%25E3%2585%2587%26sca_esv%3Dcde25c42fe00d5a3%26sca_upv%3D1#tabVal=1")
-    time.sleep(pause)
-
-    s1 = driver.find_element(By.CSS_SELECTOR, "body > div:nth-child(2) > div.iORcjf > div:nth-child(2) > div:nth-child(2) > div.HrFxGf > div > div > div > div").click()
-    time.sleep(pause)
-
-    s1 = driver.find_element(By.CSS_SELECTOR, "body > div.iORcjf > div:nth-child(2) > div > div:nth-child(2) > div > div:nth-child(2) > div > div:nth-child(2) > div.HrqWPb > div").click()
-    time.sleep(pause)
-
-    s1 = driver.find_element(By.CSS_SELECTOR, "#lb > div > div.mcPPZ.nP0TDe.xg7rAe.ivkdbf > span > div > g-text-field > div.WO1lOd > div.FFTibe > input")
-    s1.click()
-    time.sleep(pause)
-    s1.send_keys("미국")
-
-    s1 = driver.find_element(By.CSS_SELECTOR, "#lb > div > div.mcPPZ.nP0TDe.xg7rAe.ivkdbf > span > div > g-menu > g-menu-item:nth-child(53) > div").click()
-    time.sleep(pause)
-
-    s1 = driver.find_element(By.CSS_SELECTOR, "#lb > div > div.mcPPZ.nP0TDe.xg7rAe.ivkdbf > span > div > div.JhVSze > span:nth-child(2)").click()
-    time.sleep(pause)
-
-    driver.get("https://www.google.com/preferences?hl=ko&prev=https://www.google.com/search%3Fq%3D%25E3%2585%2587%26sca_esv%3Dcde25c42fe00d5a3%26sca_upv%3D1")
-    s2 = driver.find_element(By.CSS_SELECTOR, "body > div:nth-child(2) > div.iORcjf > div:nth-child(2) > div:nth-child(1) > div:nth-child(2) > div > div > div > div").click()
-    time.sleep(pause)
-
-    s2 = driver.find_element(By.XPATH, "/html/body/div[1]/div[2]/g-radio-button-group/div[3]/div[3]")
-    s2.click()
-    time.sleep(pause)
+    default_settings(driver, pause)
 
     driver.get("https://www.google.com/imghp")
 
@@ -63,23 +33,7 @@ while True:
     search_bar.submit()
     time.sleep(pause)
 
-    def scroll_and_load():
-        last_height = driver.execute_script("return document.body.scrollHeight")
-        while True:
-            driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
-            time.sleep(scroll_pause_time)
-            new_height = driver.execute_script("return document.body.scrollHeight")
-            if new_height == last_height:
-                try:
-                    driver.find_element(By.CSS_SELECTOR, ".RVQdVd").click()
-                except:
-                    try:
-                        driver.find_element(By.CSS_SELECTOR, ".mye4qd").click()
-                    except:
-                        break
-            last_height = new_height
-
-    scroll_and_load()
+    scroll_and_load(driver, scroll_pause_time)
     driver.execute_script("window.scrollTo(0, 0)")
     time.sleep(1)
 

@@ -4,7 +4,7 @@ import urllib.request
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.common.exceptions import NoSuchElementException
-from Scripts.fun import create_save_file
+from Scripts.fun import chrome, create_save_file
 
 pause = random.uniform(0.4, 0.8)
 
@@ -17,10 +17,7 @@ while True:
     query = input("검색어 입력: ")
     create_save_file(query)
 
-    chrome_options = webdriver.ChromeOptions()
-    chrome_options.add_argument("--ignore-certificate-errors")
-    chrome_options.add_argument('--ignore-ssl-errors')
-    driver = webdriver.Chrome(options=chrome_options)
+    driver = chrome()
 
     query2 = query.replace(' ', '%20')
     driver.get(f"https://namu.wiki/w/{query2}")
