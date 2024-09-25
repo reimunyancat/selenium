@@ -101,7 +101,7 @@ def error(filename, query, i, num_images, e):
     if not os.path.exists(filename):
         print(f"{i+1}번째 이미지 처리 중 오류 발생: {e}")
     else:
-        print(f"{query} : {i + 1}/{num_images} 이미지 다운로드 완료...")
+        print(f"{i + 1}/{num_images} 이미지 다운로드 완료...")
 
 def create_save_folder(query):
     if not os.path.exists('images'):
@@ -117,7 +117,7 @@ def image_limit_check(i, num_images):
 def file_extention_f(original_img_src, query, i):
     # 확장자 설정&파일경로 설정
     file_extension = original_img_src.rsplit('.', 1)[-1].split('/', 1)[0].split('?', 1)[0]
-    if file_extension in ['com', 'net', 'do', 'kr', 'data']:
+    if file_extension in ['com', 'net', 'do', 'kr', 'data', 'bmp', 'webp']:
         file_extension = 'png'
     filename = f'images\{query}\{query}_{i + 1}.{file_extension}'
     return filename

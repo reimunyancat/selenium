@@ -1,5 +1,6 @@
 import time
 import urllib.request
+import os
 from selenium.webdriver.common.by import By
 from selenium.common.exceptions import NoSuchElementException
 from Scripts.fun import chrome, default_settings, create_save_folder, image_limit_check, file_extention_f, image_download, error, scroll_and_load
@@ -16,8 +17,11 @@ urllib.request.install_opener(opener)
 
 while True:
     query = input("검색어 입력: ")
-    create_save_folder(query)
+    if query[-1] == ' ':
+        query = query[:-1]
 
+    create_save_folder(query)
+    print()
     # 이미지 개수 입력
     num_images = int(input("수집할 이미지 개수 입력: "))
 
@@ -38,6 +42,7 @@ while True:
     time.sleep(1)
 
     # 이미지 요소 탐색
+    print()
     images = driver.find_elements(By.CSS_SELECTOR, ".mNsIhb")
     print(f"총 {len(images)}개의 이미지를 찾았습니다.")
     
@@ -56,7 +61,7 @@ while True:
             time.sleep(click_pause)
 
             # 큰 이미지 URL 가져오기
-            original_img_element = driver.find_element(By.XPATH, '/html/body/div[6]/div/div/div/div/div/div/c-wiz/div/div[2]/div[2]/div/div[2]/c-wiz/div/div[3]/div[1]/a/img[1]')
+            original_img_element = driver.find_element(By.XPATH, '/html/body/div[5]/div/div/div/div/div/div/c-wiz/div/div[2]/div[2]/div/div[2]/c-wiz/div/div[3]/div[1]/a/img[1]')
             original_img_src = original_img_element.get_attribute('src')
 
             # 파일명 설정
@@ -68,7 +73,6 @@ while True:
 
         except NoSuchElementException:
             try:
-                print(f"{i+1}번째 이미지 처리 중 오류 발생: NoSuchElementException\n다시 시도합니다.")
                 original_img_element = driver.find_element(By.XPATH, '//*[@id="Sva75c"]/div[2]/div[2]/div/div[2]/c-wiz/div/div[3]/div[1]/a/img[1]')
                 original_img_src = original_img_element.get_attribute('src')
 
@@ -84,8 +88,12 @@ while True:
 
     driver.quit()
     print(f"{query} 검색어 이미지 수집 완료. 성공한 이미지 수: {success_count}")
+    print()
+    print()
     print("작업 완료 'exit' 입력시 종료 아무거나 입력하시면 다시 반복합니다.")
     wa = input()
     if wa == 'exit':
         print("종료중...")
         break
+    else:
+        os.system('cls')

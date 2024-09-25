@@ -4,9 +4,9 @@ import urllib.request
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.common.exceptions import NoSuchElementException
-from Scripts.fun import chrome, create_save_file
+from Scripts.fun import create_save_file, chrome
 
-pause = random.uniform(0.4, 0.8)
+pause = random.uniform(0.5, 0.8)
 
 # HTTP 헤더 설정
 opener = urllib.request.build_opener()
@@ -23,9 +23,10 @@ while True:
     driver.get(f"https://namu.wiki/w/{query2}")
     time.sleep(pause)
 
-    text = ' '.join(element.text for element in driver.find_elements(By.XPATH, '/html/body/div/div/div[2]/main/div/div/div[4]/div'))
+    text = ' '.join(element.text for element in driver.find_elements(By.XPATH, '/html/body/div/div/div[2]/div/div[4]/div/div[4]/div'))
+    text = text.replace('\n[편집]', '')
 
-    with open(f'texts\{query}.txt', 'w', encoding='utf-8') as f:
+    with open(f'texts/{query}.txt', 'w', encoding='utf-8') as f:
         f.write(text)
 
     driver.quit()
