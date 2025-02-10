@@ -5,7 +5,7 @@ from selenium.webdriver.common.by import By
 from selenium.common.exceptions import NoSuchElementException
 from Scripts.fun import chrome, default_settings, create_save_folder, image_limit_check, file_extention_f, image_download, error, scroll_and_load
 
-pause = 0.4
+pause = 0.3
 click_pause = 0.3
 scroll_pause_time = 1.5
 success_count = 0
@@ -19,11 +19,24 @@ while True:
     query = input("검색어 입력: ")
     if query[-1] == ' ':
         query = query[:-1]
+    if query.isalpha() == False:
+        p = True
+    else:
+        p = False
 
     create_save_folder(query)
     print()
     # 이미지 개수 입력
     num_images = int(input("수집할 이미지 개수 입력: "))
+
+    extention = input("이미지 확장자 입력(1: jpg  2: png): ")
+    if extention == '1':
+        extention = 'jpg'
+    elif extention == '2':
+        extention = 'png'
+    else:
+        print("잘못된 입력입니다. 기본 확장자 jpg로 설정합니다.")
+        extention = 'jpg'
 
     driver = chrome()
 
@@ -43,7 +56,7 @@ while True:
 
     # 이미지 요소 탐색
     print()
-    images = driver.find_elements(By.CSS_SELECTOR, ".mNsIhb")
+    images = driver.find_elements(By.CSS_SELECTOR, ".YQ4gaf")
     print(f"총 {len(images)}개의 이미지를 찾았습니다.")
     
     filename = 'temp'
@@ -53,38 +66,70 @@ while True:
         if num_images > len(images): num_images = len(images)
         if image_limit_check(i, num_images):
             break
-        
-        try:
-            # 이미지를 클릭하여 큰 이미지가 표시되도록 함
-            img_element = driver.find_elements(By.CSS_SELECTOR, ".mNsIhb")[i]
-            driver.execute_script("arguments[0].click();", img_element)
-            time.sleep(click_pause)
-
-            # 큰 이미지 URL 가져오기
-            original_img_element = driver.find_element(By.XPATH, '/html/body/div[5]/div/div/div/div/div/div/c-wiz/div/div[2]/div[2]/div/div[2]/c-wiz/div/div[3]/div[1]/a/img[1]')
-            original_img_src = original_img_element.get_attribute('src')
-
-            # 파일명 설정
-            filename = file_extention_f(original_img_src, query, i)
-
-            # 이미지 다운로드
-            image_download(original_img_src, filename, query, i, num_images)
-            success_count += 1
-
-        except NoSuchElementException:
+        if p == True:
             try:
-                original_img_element = driver.find_element(By.XPATH, '//*[@id="Sva75c"]/div[2]/div[2]/div/div[2]/c-wiz/div/div[3]/div[1]/a/img[1]')
+                # 이미지를 클릭하여 큰 이미지가 표시되도록 함
+                img_element = driver.find_elements(By.CSS_SELECTOR, ".YQ4gaf")[i]
+                driver.execute_script("arguments[0].click();", img_element)
+                time.sleep(click_pause)
+
+                # 큰 이미지 URL 가져오기
+                original_img_element = driver.find_element(By.XPATH, '/html/body/div[13]/div[2]/div[3]/div/div/c-wiz/div/div[2]/div[2]/div/div[2]/c-wiz/div/div[3]/div[1]/a/img')
                 original_img_src = original_img_element.get_attribute('src')
 
-                filename = file_extention_f(original_img_src, query, i)
+                # 파일명 설정
+                filename = file_extention_f(original_img_src, query, i, extention)
 
+                # 이미지 다운로드
                 image_download(original_img_src, filename, query, i, num_images)
                 success_count += 1
+
+            except NoSuchElementException:
+                try:
+                    original_img_element = driver.find_element(By.XPATH, '//*[@id="Sva75c"]/div[2]/div[2]/div/div[2]/c-wiz/div/div[3]/div[1]/a/img')
+                    original_img_src = original_img_element.get_attribute('src')
+
+                    filename = file_extention_f(original_img_src, query, i, extention)
+
+                    image_download(original_img_src, filename, query, i, num_images)
+                    success_count += 1
+                except Exception as e:
+                    error(filename, query, i, num_images, e)
+
             except Exception as e:
                 error(filename, query, i, num_images, e)
+        else:
+            try:
+                # 이미지를 클릭하여 큰 이미지가 표시되도록 함
+                img_element = driver.find_elements(By.CSS_SELECTOR, ".mNsIhb")[i]
+                driver.execute_script("arguments[0].click();", img_element)
+                time.sleep(click_pause)
 
-        except Exception as e:
-            error(filename, query, i, num_images, e)
+                # 큰 이미지 URL 가져오기
+                original_img_element = driver.find_element(By.XPATH, '/html/body/div[5]/div/div/div/div/div/div/c-wiz/div/div[2]/div[2]/div/div[2]/c-wiz/div/div[3]/div[1]/a/img[1]')
+                original_img_src = original_img_element.get_attribute('src')
+
+                # 파일명 설정
+                filename = file_extention_f(original_img_src, query, i, extention)
+
+                # 이미지 다운로드
+                image_download(original_img_src, filename, query, i, num_images)
+                success_count += 1
+
+            except NoSuchElementException:
+                try:
+                    original_img_element = driver.find_element(By.XPATH, '//*[@id="Sva75c"]/div[2]/div[2]/div/div[2]/c-wiz/div/div[3]/div[1]/a/img[1]')
+                    original_img_src = original_img_element.get_attribute('src')
+
+                    filename = file_extention_f(original_img_src, query, i, extention)
+
+                    image_download(original_img_src, filename, query, i, num_images)
+                    success_count += 1
+                except Exception as e:
+                    error(filename, query, i, num_images, e)
+
+            except Exception as e:
+                error(filename, query, i, num_images, e)
 
     driver.quit()
     print(f"{query} 검색어 이미지 수집 완료. 성공한 이미지 수: {success_count}")
@@ -97,3 +142,5 @@ while True:
         break
     else:
         os.system('cls')
+
+# /html/body/div[11]/div[2]/div[3]/div/div/c-wiz/div/div[2]/div[2]/div/div[2]/c-wiz/div/div[3]/div[1]/a/img

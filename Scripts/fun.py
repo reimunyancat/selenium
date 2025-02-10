@@ -7,6 +7,7 @@ from selenium import webdriver
 from functools import wraps
 from urllib.error import URLError, HTTPError
 from ssl import SSLError
+import extension as ex
 
 def chrome():
     chrome_options = webdriver.ChromeOptions()
@@ -114,11 +115,10 @@ def image_limit_check(i, num_images):
     if i >= num_images:
         return True
 
-def file_extention_f(original_img_src, query, i):
-    # 확장자 설정&파일경로 설정
+def file_extention_f(original_img_src, query, i, extention):
     file_extension = original_img_src.rsplit('.', 1)[-1].split('/', 1)[0].split('?', 1)[0]
-    if file_extension in ['com', 'net', 'do', 'kr', 'data', 'bmp', 'webp']:
-        file_extension = 'png'
+    if file_extension in ex:
+        file_extension = extention
     filename = f'images\{query}\{query}_{i + 1}.{file_extension}'
     return filename
 
