@@ -3,7 +3,7 @@ import urllib.request
 import os
 from selenium.webdriver.common.by import By
 from selenium.common.exceptions import NoSuchElementException
-from Scripts.fun import chrome, default_settings, create_save_folder, image_limit_check, file_extention_f, image_download, error, scroll_and_load
+from Scripts.function import chrome, default_settings, create_save_folder, image_limit_check, file_extention_f, image_download, error, scroll_and_load
 
 pause = 0.3
 click_pause = 0.3

@@ -1,6 +1,7 @@
-Scripts/__pycache__/
+Scripts/__pycache__
 Scripts/__init__.py
-__pycache__/
+__pycache__
 venv/
 images
 text
+.gitattributes
