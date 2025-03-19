@@ -9,6 +9,20 @@ from urllib.error import URLError, HTTPError
 from ssl import SSLError
 import extension as ex
 
+def init_var():
+    pause = 0.3
+    click_pause = 0.3
+    scroll_pause_time = 1.5
+    success_count = 0
+    
+    return pause, click_pause, scroll_pause_time, success_count
+
+def init_http():
+    opener = urllib.request.build_opener()
+    opener.addheaders = [('User-Agent', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36')]
+
+    return opener
+
 def chrome():
     chrome_options = webdriver.ChromeOptions()
     chrome_options.add_argument("--ignore-certificate-errors")

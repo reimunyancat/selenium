@@ -4,7 +4,7 @@ import urllib.request
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.common.exceptions import NoSuchElementException
-from Scripts.function import create_save_file, chrome
+from util.function import create_save_file, chrome
 
 pause = random.uniform(0.5, 0.8)
 

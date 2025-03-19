@@ -3,18 +3,24 @@ import urllib.request
 import os
 from selenium.webdriver.common.by import By
 from selenium.common.exceptions import NoSuchElementException
-from Scripts.function import chrome, default_settings, create_save_folder, image_limit_check, file_extention_f, image_download, error, scroll_and_load
+from util.function import (
+                            init_var,
+                            init_http,
+                            chrome, 
+                            default_settings, 
+                            create_save_folder, 
+                            image_limit_check, 
+                            file_extention_f, 
+                            image_download, 
+                            error, 
+                            scroll_and_load
+                            )
 
-pause = 0.3
-click_pause = 0.3
-scroll_pause_time = 1.5
-success_count = 0
+pause, click_pause, scroll_pause_time, success_count = init_var()
 
-opener = urllib.request.build_opener()
-opener.addheaders = [('User-Agent', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36')]
-urllib.request.install_opener(opener)
+urllib.request.install_opener(init_http())
 
-while True:
+def main():
     query = input("검색어 입력: ")
     if query[-1] == ' ':
         query = query[:-1]
@@ -126,8 +132,16 @@ while True:
     wa = input()
     if wa == 'exit':
         print("종료중...")
-        break
+        return 0
     else:
         os.system('cls')
+
+
+while True:
+    t = main()
+    if(t):
+        main()
+    else:
+        break
 
 # /html/body/div[11]/div[2]/div[3]/div/div/c-wiz/div/div[2]/div[2]/div/div[2]/c-wiz/div/div[3]/div[1]/a/img
