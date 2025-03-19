@@ -10,7 +10,6 @@ click_pause = 0.3
 scroll_pause_time = 1.5
 success_count = 0
 
-# HTTP 헤더 설정
 opener = urllib.request.build_opener()
 opener.addheaders = [('User-Agent', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36')]
 urllib.request.install_opener(opener)
@@ -26,7 +25,6 @@ while True:
 
     create_save_folder(query)
     print()
-    # 이미지 개수 입력
     num_images = int(input("수집할 이미지 개수 입력: "))
 
     extention = input("이미지 확장자 입력(1: jpg  2: png): ")
@@ -44,7 +42,6 @@ while True:
 
     driver.get("https://www.google.com/imghp")
 
-    # 검색어 입력 및 검색 수행
     search_bar = driver.find_element(By.NAME, "q")
     search_bar.send_keys(query)
     search_bar.submit()
@@ -54,33 +51,27 @@ while True:
     driver.execute_script("window.scrollTo(0, 0)")
     time.sleep(1)
 
-    # 이미지 요소 탐색
     print()
     images = driver.find_elements(By.CSS_SELECTOR, ".YQ4gaf")
     print(f"총 {len(images)}개의 이미지를 찾았습니다.")
     
     filename = 'temp'
-    
-    # 이미지 다운로드
+
     for i in range(0, num_images):
         if num_images > len(images): num_images = len(images)
         if image_limit_check(i, num_images):
             break
         if p == True:
             try:
-                # 이미지를 클릭하여 큰 이미지가 표시되도록 함
                 img_element = driver.find_elements(By.CSS_SELECTOR, ".YQ4gaf")[i]
                 driver.execute_script("arguments[0].click();", img_element)
                 time.sleep(click_pause)
 
-                # 큰 이미지 URL 가져오기
                 original_img_element = driver.find_element(By.XPATH, '/html/body/div[13]/div[2]/div[3]/div/div/c-wiz/div/div[2]/div[2]/div/div[2]/c-wiz/div/div[3]/div[1]/a/img')
                 original_img_src = original_img_element.get_attribute('src')
 
-                # 파일명 설정
                 filename = file_extention_f(original_img_src, query, i, extention)
 
-                # 이미지 다운로드
                 image_download(original_img_src, filename, query, i, num_images)
                 success_count += 1
 
@@ -100,19 +91,15 @@ while True:
                 error(filename, query, i, num_images, e)
         else:
             try:
-                # 이미지를 클릭하여 큰 이미지가 표시되도록 함
                 img_element = driver.find_elements(By.CSS_SELECTOR, ".mNsIhb")[i]
                 driver.execute_script("arguments[0].click();", img_element)
                 time.sleep(click_pause)
 
-                # 큰 이미지 URL 가져오기
                 original_img_element = driver.find_element(By.XPATH, '/html/body/div[5]/div/div/div/div/div/div/c-wiz/div/div[2]/div[2]/div/div[2]/c-wiz/div/div[3]/div[1]/a/img[1]')
                 original_img_src = original_img_element.get_attribute('src')
 
-                # 파일명 설정
                 filename = file_extention_f(original_img_src, query, i, extention)
 
-                # 이미지 다운로드
                 image_download(original_img_src, filename, query, i, num_images)
                 success_count += 1
 
