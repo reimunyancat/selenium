@@ -1,1 +1,0 @@
-ex = ['com', 'net', 'do', 'kr', 'data', 'bmp', 'webp', 'jpg', 'png', 'jpeg', 'JPG', 'gif', 'jpg&w=1920&q=100']
