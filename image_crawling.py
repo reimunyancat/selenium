@@ -1,5 +1,4 @@
 import time
-import urllib.request
 import os
 from selenium.webdriver.common.by import By
 from selenium.common.exceptions import NoSuchElementException
