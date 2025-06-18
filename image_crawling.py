@@ -3,7 +3,7 @@ import os
 from selenium.webdriver.common.by import By
 from selenium.common.exceptions import NoSuchElementException
 from util.image_utils import (
-    init_environment,
+    init_env,
     create_save_folder,
     file_extension_check,
     image_download,
@@ -13,7 +13,7 @@ from util.image_utils import (
 from util.browser_utils import create_driver, configure_search_settings
 
 def main():
-    pause_times, success_count = init_environment()
+    pause_times, success_count = init_env()
     
     query = input("검색어 입력: ").strip()
     is_non_alpha = not query.isalpha()
@@ -73,15 +73,11 @@ def main():
     return input() == 'exit'
 
 def get_image_source(driver, is_non_alpha):
-    xpath_patterns = [
-        '/html/body/div[13]/div[2]/div[3]/div/div/c-wiz/div/div[2]/div[2]/div/div[2]/c-wiz/div/div[3]/div[1]/a/img',
-        '//*[@id="Sva75c"]/div[2]/div[2]/div/div[2]/c-wiz/div/div[3]/div[1]/a/img',
-        '/html/body/div[5]/div/div/div/div/div/div/c-wiz/div/div[2]/div[2]/div/div[2]/c-wiz/div/div[3]/div[1]/a/img[1]',
-        '//*[@id="Sva75c"]/div[2]/div[2]/div/div[2]/c-wiz/div/div[3]/div[1]/a/img[1]'
+    patterns = [
+        '//*[@id="Sva75c"]/div[2]/div[2]/div/div[2]/c-wiz/div/div[2]/div[2]/a/img[1]',
+        '/html/body/div[14]/div[2]/div[3]/div/div/c-wiz/div/div[2]/div[2]/div/div[2]/c-wiz/div/div[2]/div[2]/a/img[1]'
     ]
-    
-    patterns = xpath_patterns[:2] if is_non_alpha else xpath_patterns[2:]
-    
+        
     for xpath in patterns:
         try:
             element = driver.find_element(By.XPATH, xpath)

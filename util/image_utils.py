@@ -7,9 +7,9 @@ from urllib.error import URLError, HTTPError
 from ssl import SSLError
 from functools import wraps
 
-VALID_EXTENSIONS = ['com', 'net', 'do', 'kr', 'data', 'bmp', 'webp', 'jpg', 'png', 'jpeg', 'JPG', 'gif', 'jpg&w=1920&q=100']
+VALID_EXTENSIONS = ['com', 'net', 'do', 'kr', 'data', 'bmp', 'webp', 'jpg', 'png', 'jpeg', 'JPG', 'jpg&w=1920&q=100', 'id']
 
-def init_environment():
+def init_env():
     opener = urllib.request.build_opener()
     opener.addheaders = [('User-Agent', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36')]
     urllib.request.install_opener(opener)
