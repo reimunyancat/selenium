@@ -1,4 +1,4 @@
-# Selenium-based Image & Text Crawler
+# Selenium Image & Text Crawler
 
 ## Overview
 This project provides Python scripts to automatically crawl:
